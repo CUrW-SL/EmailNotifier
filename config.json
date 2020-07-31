@@ -1,0 +1,121 @@
+{
+  "enabled_model_list": ["WRF_A", "WRF_C", "WRF_E", "WRF_SE", "MIKE","FLO2D_250"],
+
+  "db_config": {
+    "user": "admin",
+    "password": "floody",
+    "host": "10.138.0.13"
+  },
+
+  "recipients":
+    {
+      "water_level": [
+        "hasithadkr7@gmail.com"],
+      "discharge": [
+        "hasithadkr7@gmail.com"],
+      "precipitation": [
+        "hasithadkr7@gmail.com"]
+    },
+
+  "email_config":
+    {
+      "host": "smtp.gmail.com",
+      "port": 587,
+      "user-name": "curwalerts@gmail.com",
+      "password": "curwalerts@data"
+    },
+
+  "model_config":
+      {
+        "water_level": {
+          "FLO2D_250": {
+            "source": 9,
+            "sim_tag": "hourly_run",
+            "variable": 2,
+            "unit": 2,
+            "forecast_days": 2
+          },
+          "FLO2D_150": {
+            "source": 10,
+            "sim_tag": "hourly_run",
+            "variable": 2,
+            "unit": 2,
+            "forecast_days": 2
+          },
+          "FLO2D_150_V2": {
+            "source": 24,
+            "sim_tag": "hourly_run",
+            "variable": 2,
+            "unit": 2,
+            "forecast_days": 2
+          },
+          "MIKE": {
+            "source": 26,
+            "sim_tag": "hourly_run",
+            "variable": 2,
+            "unit": 2,
+            "forecast_days": 2
+          }
+        },
+        "discharge": {
+          "HDC": {
+            "source": 17,
+            "sim_tag": "hourly_run",
+            "variable": 3,
+            "unit": 3,
+            "forecast_days": 2
+          },
+          "HDE": {
+            "source": 25,
+            "sim_tag": "hourly_run",
+            "variable": 3,
+            "unit": 3,
+            "forecast_days": 2
+          },
+          "HLC": {
+            "source": 27,
+            "sim_tag": "hourly_run",
+            "variable": 3,
+            "unit": 3,
+            "forecast_days": 2
+          },
+          "HLE": {
+            "source": 28,
+            "sim_tag": "hourly_run",
+            "variable": 3,
+            "unit": 3,
+            "forecast_days": 2
+          }
+        },
+        "precipitation": {
+          "WRF_A": {
+            "source": 19,
+            "sim_tag": "hourly_run",
+            "variable": 1,
+            "unit": 1,
+            "forecast_days": 2
+          },
+          "WRF_C": {
+            "source": 20,
+            "sim_tag": "hourly_run",
+            "variable": 1,
+            "unit": 1,
+            "forecast_days": 2
+          },
+          "WRF_E": {
+            "source": 22,
+            "sim_tag": "hourly_run",
+            "variable": 1,
+            "unit": 1,
+            "forecast_days": 2
+          },
+          "WRF_SE": {
+            "source": 21,
+            "sim_tag": "hourly_run",
+            "variable": 1,
+            "unit": 1,
+            "forecast_days": 2
+          }
+        }
+      }
+}
