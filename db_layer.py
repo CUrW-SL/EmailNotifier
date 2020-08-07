@@ -32,19 +32,33 @@ def close_connection(connection):
         print('db connection has already closed.')
 
 
-def get_enabled_stations(db_config):
+def get_enabled_water_level_stations(db_config, model):
     stations = []
     db_con = get_dss_db_connection(db_config)
     if db_con is not None:
         cursor = db_con.cursor(buffered=True)
-        sql_query='select flo2d_250,flo2d_150,flo2d_150_v2,mike,station_name,alert_level from dss.station_alert where enable=1;'
+        sql_query='select {}, station_name, alert_level from dss.station_alert where enable=1;'.format(model)
         cursor.execute(sql_query)
         results = cursor.fetchall()
         for row in results:
-            model_info = dict(flo2d_250=row[0], flo2d_150=row[1], flo2d_150_v2=row[2], mike=row[3],
-                              station_name=row[4], alert_level=row[5])
+            model_info = dict(station_id=row[0], station_name=row[1], alert_level=row[2])
             stations.append(model_info)
     close_connection(db_con)
     return stations
 
 
+def get_station_hash_info(db_config, station_id, source_id, variable_id, unit_id, end_time_limit):
+    hash_info = {}
+    db_con = get_dss_db_connection(db_config)
+    if db_con is not None:
+        cursor = db_con.cursor(buffered=True)
+        sql_query = 'select id,end_date from curw_fcst.run where station={} and source={} and variable={} and unit={} and end_date>\'{}\';'.format(
+            station_id, source_id, variable_id, unit_id, end_time_limit)
+        print('get_station_hash_info|sql_query : ', sql_query)
+        cursor.execute(sql_query)
+        result = cursor.fetchone()
+        if result:
+            hash_info['hash_id'] = result[0]
+            hash_info['latest_fgt'] = result[1]
+    close_connection(db_con)
+    return hash_info

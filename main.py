@@ -1,16 +1,17 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import traceback
+from notifier import notify
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    config_path = '/home/hasitha/PycharmProjects/EmailNotifier/config.json'
+    parameter_type = 'water_level'
+    models = ['flo2d_250']
+    try:
+        notify(config_path, parameter_type, models)
+    except Exception as e:
+        print('Exception in main:', str(e))
+        traceback.print_exc()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+
