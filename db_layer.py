@@ -47,13 +47,14 @@ def get_enabled_water_level_stations(db_config, model):
     return stations
 
 
-def get_station_hash_info(db_config, station_id, source_id, variable_id, unit_id, end_time_limit):
+def get_station_hash_info(db_config, station_id, source_id, variable_id, unit_id, init_time):
     hash_info = {}
     db_con = get_dss_db_connection(db_config)
     if db_con is not None:
         cursor = db_con.cursor(buffered=True)
-        sql_query = 'select id,end_date from curw_fcst.run where station={} and source={} and variable={} and unit={} and end_date>\'{}\';'.format(
-            station_id, source_id, variable_id, unit_id, end_time_limit)
+        sql_query = 'select id,end_date from curw_fcst.run where station={} and source={} and ' \
+                    'variable={} and unit={} and end_date>\'{}\';'.format(
+            station_id, source_id, variable_id, unit_id, init_time)
         print('get_station_hash_info|sql_query : ', sql_query)
         cursor.execute(sql_query)
         result = cursor.fetchone()
@@ -62,3 +63,24 @@ def get_station_hash_info(db_config, station_id, source_id, variable_id, unit_id
             hash_info['latest_fgt'] = result[1]
     close_connection(db_con)
     return hash_info
+
+
+def get_station_status(db_config, start_limit, end_limit, fgt, alert_level, hash_id):
+    alert_info = {}
+    db_con = get_dss_db_connection(db_config)
+    if db_con is not None:
+        cursor = db_con.cursor(buffered=True)
+        sql_query = 'select time,fgt,value from curw_fcst.data where time>\'{}\' and time < \'{}\' and fgt = \'{}\' ' \
+                    'and value > {} and id = \'{}\' order by value desc limit 1;'.format(start_limit, end_limit, fgt,
+                                                                                          alert_level, hash_id)
+        print('get_station_hash_info|sql_query : ', sql_query)
+        cursor.execute(sql_query)
+        result = cursor.fetchone()
+        if result:
+            alert_info['time'] = result[0]
+            alert_info['fgt'] = result[1]
+            alert_info['value'] = result[2]
+    close_connection(db_con)
+    return alert_info
+
+

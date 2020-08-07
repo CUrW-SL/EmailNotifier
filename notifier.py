@@ -1,7 +1,8 @@
 import json
 import traceback
 from datetime import datetime,timedelta
-from db_layer import get_enabled_water_level_stations, get_station_hash_info
+from db_layer import get_enabled_water_level_stations, \
+    get_station_hash_info, get_station_status
 
 
 def _get_config(config_path):
@@ -43,6 +44,7 @@ def _get_time_limits(lead_time_hours):
 
 def notify_water_level(config, models, lead_time_hours):
     [init_time, start_time, end_time] = _get_time_limits(lead_time_hours)
+    notify_water_level_info = []
     for model in models:
         print('notify_water_level|model : ', model)
         model_config = config['model_config']['water_level'][model]
@@ -56,8 +58,24 @@ def notify_water_level(config, models, lead_time_hours):
                                               model_config['unit'], init_time)
             print('notify_water_level|hash_info : ', hash_info)
             if hash_info:
-                print('')
-
+                if hash_info['latest_fgt'] > datetime.strptime(init_time, '%Y-%m-%d %H:%M:%S'):
+                    alert_info = get_station_status(config['db_config'], start_time, end_time,
+                                                    hash_info['latest_fgt'].strftime('%Y-%m-%d %H:%M:%S'),
+                                                    station['alert_level'], hash_info['hash_id'])
+                    if alert_info:
+                        station['hash_id'] = hash_info['hash_id']
+                        station['latest_fgt'] = hash_info['latest_fgt']
+                        station['time'] = alert_info['time']
+                        station['fgt'] = alert_info['fgt']
+                        station['value'] = alert_info['value']
+                        alerted_stations.append(station)
+                    else:
+                        print('notify_water_level|no alert info found.')
+                else:
+                    print('notify_water_level|no runs for today|model:', model)
+            else:
+                print('notify_water_level|no hash info|station : ', station)
+        notify_water_level_info.append({model: alerted_stations})
 
 
 
