@@ -9,7 +9,7 @@ def get_db_connection(mysql_user, mysql_password, mysql_host, mysql_db):
                                              password=mysql_password,
                                              host=mysql_host,
                                              database=mysql_db)
-        print('new db connection has created.')
+        # print('new db connection has created.')
         return connection
     except ConnectionError as ex:
         print('ConnectionError|ex: ', ex)
@@ -27,7 +27,7 @@ def get_dss_db_connection(db_config):
 def close_connection(connection):
     if connection is not None:
         connection.close()
-        print('db connection has closed.')
+        # print('db connection has closed.')
     else:
         print('db connection has already closed.')
 
@@ -55,7 +55,7 @@ def get_station_hash_info(db_config, station_id, source_id, variable_id, unit_id
         sql_query = 'select id,end_date from curw_fcst.run where station={} and source={} and ' \
                     'variable={} and unit={} and end_date>\'{}\';'.format(
             station_id, source_id, variable_id, unit_id, init_time)
-        print('get_station_hash_info|sql_query : ', sql_query)
+        # print('get_station_hash_info|sql_query : ', sql_query)
         cursor.execute(sql_query)
         result = cursor.fetchone()
         if result:
@@ -71,9 +71,9 @@ def get_station_status(db_config, start_limit, end_limit, fgt, alert_level, hash
     if db_con is not None:
         cursor = db_con.cursor(buffered=True)
         sql_query = 'select time,fgt,value from curw_fcst.data where time>\'{}\' and time < \'{}\' and fgt = \'{}\' ' \
-                    'and value > {} and id = \'{}\' order by value desc limit 1;'.format(start_limit, end_limit, fgt,
+                    'and value >= {} and id = \'{}\' order by value desc limit 1;'.format(start_limit, end_limit, fgt,
                                                                                           alert_level, hash_id)
-        print('get_station_hash_info|sql_query : ', sql_query)
+        # print('get_station_hash_info|sql_query : ', sql_query)
         cursor.execute(sql_query)
         result = cursor.fetchone()
         if result:
