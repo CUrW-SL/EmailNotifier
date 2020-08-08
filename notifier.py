@@ -29,8 +29,10 @@ def notify(config_path, parameter_type, models, lead_time_hours=6):
                 alert_mails = mail_content_formatter('Water Level', notify_info)
                 if len(alert_mails) > 0:
                     for [subject, content] in alert_mails:
-                        if len(content)>0:
-                            send_email(config['email_config'], subject, content, config['recipients']['water_level'])
+                        if len(content) > 0:
+                            print('notify|subject : ', subject)
+                            print('notify|content : ', content)
+                            #send_email(config['email_config'], subject, content, config['recipients']['water_level'])
         elif parameter_type == 'discharge':
             print('notify|discharge')
         elif parameter_type == 'precipitation':
