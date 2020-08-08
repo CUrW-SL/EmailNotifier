@@ -22,6 +22,8 @@ source venv/bin/activate
 # Install dependencies using pip.
 if [ ! -f "mail_notifier.log" ]
 then
+    echo "Installing pytz"
+    pip install pytz
     echo "Installing mysql-connector"
     pip install mysql-connector
     touch /home/uwcc-admin/mail_notifier.log
