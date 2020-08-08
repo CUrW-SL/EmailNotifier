@@ -1,8 +1,5 @@
 import smtplib
 import traceback
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from django.core.mail import send_mail
 
 
 def send_email(email_config, email_subject, email_content, recipients_list):
