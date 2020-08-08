@@ -1,6 +1,6 @@
 import json
 import traceback
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 from db_layer import get_enabled_water_level_stations, \
     get_station_hash_info, get_station_status
 from send_mail import send_email
@@ -20,17 +20,16 @@ def _get_config(config_path):
 def notify(config_path, parameter_type, models, lead_time_hours=6):
     print('notify|[config_path, parameter_type, models] : ', [config_path, parameter_type, models])
     config = _get_config(config_path)
-    notify_info = []
     if config is not None:
-        print('notify|config : ', config['model_config'])
+        # print('notify|config : ', config['model_config'])
         if parameter_type == 'water_level':
             print('notify|water_level')
             notify_info = notify_water_level(config, models, lead_time_hours)
             if notify_info:
                 alert_mails = mail_content_formatter('Water Level', notify_info)
-                if len(alert_mails)>0:
+                if len(alert_mails) > 0:
                     for [subject, content] in alert_mails:
-                        send_email(config['email_config'],subject,content, config['recipients']['water_level'])
+                        send_email(config['email_config'], subject, content, config['recipients']['water_level'])
         elif parameter_type == 'discharge':
             print('notify|discharge')
         elif parameter_type == 'precipitation':
@@ -47,16 +46,15 @@ def mail_content_formatter(parameter_type, notify_infos):
         print('mail_content_formatter|mail_subject : ', mail_subject)
         mail_content = []
         for station in alerted_stations:
-            content_line = '*----------------------------------------------------------------------------------------*\n' \
+            content_line = '----------------------------------------------------------------------------------------\n' \
                            'Station name : {} \n' \
-                            'Alert Level : {}\n' \
-                            'Forecast generated time : {}\n' \
-                            'Maximum forecast water level : {} at {}.\n' \
-                           '*----------------------------------------------------------------------------------------*\n'.\
-                            format(station['station_name'], station['alert_level'], station['fgt'].strftime('%Y-%m-%d %H:%M:%S'),
-                            station['value'], station['time'].strftime('%Y-%m-%d %H:%M:%S'))
+                           'Configured alert level : {}\n' \
+                           'Forecast generated time : {}\n' \
+                           'Maximum forecast water level : {} at {}.\n' \
+                .format(station['station_name'], station['alert_level'], station['fgt'].strftime('%Y-%m-%d %H:%M:%S'),
+                        station['value'], station['time'].strftime('%Y-%m-%d %H:%M:%S'))
             mail_content.append(content_line)
-        if len(mail_content)>0:
+        if len(mail_content) > 0:
             mail_content = '\n'.join(mail_content)
         alert_mails.append([mail_subject, mail_content])
     return alert_mails
@@ -108,8 +106,3 @@ def notify_water_level(config, models, lead_time_hours):
         notify_water_level_info.append([model, alerted_stations])
     print('notify_water_level|notify_water_level_info : ', notify_water_level_info)
     return notify_water_level_info
-
-
-
-
-
