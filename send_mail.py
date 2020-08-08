@@ -27,6 +27,8 @@ def send_email(email_config, email_subject, email_content, recipients_list):
         smtp_server.sendmail(email_message)
         print("Successfully sent the email notifications!!")
         smtp_server.quit()
+    except smtplib.SMTPException as e:
+        print("Error while sending email notifications: ", str(e))
     except Exception as ex:
-        print("Error while sending email notifications: ", ex)
+        print("Error while sending email notifications: ", str(ex))
         traceback.print_exc()
