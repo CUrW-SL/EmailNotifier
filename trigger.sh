@@ -24,12 +24,12 @@ if [ ! -f "mail_notifier.log" ]
 then
     echo "Installing mysql-connector"
     pip install mysql-connector
-    touch mail_notifier.log
+    touch /home/uwcc-admin/mail_notifier.log
 fi
 
 
 echo "Running mail_notifier main.py"
-python main.py >> mail_notifier.log 2>&1
+python main.py >> /home/uwcc-admin/mail_notifier.log 2>&1
 
 # Deactivating virtual environment
 echo "Deactivating virtual environment"
