@@ -1,6 +1,4 @@
 import mysql.connector
-from datetime import datetime, timedelta
-import pandas as pd
 
 
 def get_db_connection(mysql_user, mysql_password, mysql_host, mysql_db):
