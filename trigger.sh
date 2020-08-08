@@ -24,8 +24,6 @@ if [ ! -f "mail_notifier.log" ]
 then
     echo "Installing mysql-connector"
     pip install mysql-connector
-    echo "Installing EmailNotifier"
-    pip install git+https://github.com/CUrW-SL/EmailNotifier.git
     touch mail_notifier.log
 fi
 
