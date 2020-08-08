@@ -23,7 +23,8 @@ def send_email(email_config, email_subject, email_content, recipients_list):
         # add in the message body
         email_message.attach(MIMEText(email_content, 'plain'))
         # send the message via the server set up earlier.
-        smtp_server.send_message(email_message)
+        # smtp_server.send_message(email_message)
+        smtp_server.sendmail(email_message)
         print("Successfully sent the email notifications!!")
         smtp_server.quit()
     except Exception as ex:
