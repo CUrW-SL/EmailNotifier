@@ -60,6 +60,7 @@ def mail_content_formatter(parameter_type, notify_infos):
         if len(mail_content) > 0:
             mail_content = '\n'.join(mail_content)
         alert_mails.append([mail_subject, mail_content])
+        mail_subject = 'CUrW Alerts|{}|{}'
     return alert_mails
 
 
