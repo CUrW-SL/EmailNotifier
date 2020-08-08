@@ -32,7 +32,7 @@ def notify(config_path, parameter_type, models, lead_time_hours=6):
                         if len(content) > 0:
                             print('notify|subject : ', subject)
                             print('notify|content : ', content)
-                            #send_email(config['email_config'], subject, content, config['recipients']['water_level'])
+                            send_email(config['email_config'], subject, content, config['recipients']['water_level'])
         elif parameter_type == 'discharge':
             print('notify|discharge')
         elif parameter_type == 'precipitation':
