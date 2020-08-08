@@ -2,6 +2,7 @@ import smtplib
 import traceback
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from django.core.mail import send_mail
 
 
 def send_email(email_config, email_subject, email_content, recipients_list):
@@ -24,14 +25,12 @@ def send_email(email_config, email_subject, email_content, recipients_list):
         email_message.attach(MIMEText(email_content, 'plain'))
         # send the message via the server set up earlier.
         # smtp_server.send_message(email_message)
-        message = """\
-        Subject: {}
-        From: {}
+        message = """Subject: {} 
 
-        {}""".format(email_subject, email_config['user-name'], email_content)
+        {}""".format(email_subject, email_content)
 
         smtp_server.sendmail(email_config['user-name'], recipients_list, message)
-        
+
         print("Successfully sent the email notifications!!")
         smtp_server.quit()
     except smtplib.SMTPException as e:
