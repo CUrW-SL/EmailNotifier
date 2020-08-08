@@ -24,7 +24,14 @@ def send_email(email_config, email_subject, email_content, recipients_list):
         email_message.attach(MIMEText(email_content, 'plain'))
         # send the message via the server set up earlier.
         # smtp_server.send_message(email_message)
-        smtp_server.sendmail(email_config['user-name'], recipients_list, email_content)
+        message = """\
+        Subject: {}
+        From: {}
+
+        {}""".format(email_subject, email_config['user-name'], email_content)
+
+        smtp_server.sendmail(email_config['user-name'], recipients_list, message)
+        
         print("Successfully sent the email notifications!!")
         smtp_server.quit()
     except smtplib.SMTPException as e:
