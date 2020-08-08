@@ -1,4 +1,5 @@
 import smtplib
+import traceback
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
@@ -27,3 +28,4 @@ def send_email(email_config, email_subject, email_content, recipients_list):
         smtp_server.quit()
     except Exception as ex:
         print("Error while sending email notifications: ", ex)
+        traceback.print_exc()
